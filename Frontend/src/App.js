@@ -23,6 +23,7 @@ function App() {
             <BrowserRouter>
                 <Navigation />
                 <Routes>
+                    {/* defining the routes for the non user */}
                     <Route path="/" element={<Home />} />
                     {!user && (
                         <>
@@ -30,6 +31,8 @@ function App() {
                             <Route path="/signup" element={<Signup />} />
                         </>
                     )}
+                    {/* defining the routes for the user */}
+
                     <Route path="/chat" element={<Chat />} />
                 </Routes>
             </BrowserRouter>

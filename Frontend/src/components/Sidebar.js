@@ -15,6 +15,7 @@ function Sidebar() {
         if (!user) {
             return alert("Please login");
         }
+        // sending message 
         socket.emit("join-room", room, currentRoom);
         setCurrentRoom(room);
 
@@ -24,7 +25,7 @@ function Sidebar() {
         // dispatch for notifications
         dispatch(resetNotifications(room));
     }
-
+// stop listning removinfg from notification
     socket.off("notifications").on("notifications", (room) => {
         if (currentRoom != room) dispatch(addNotifications(room));
     });
@@ -37,17 +38,17 @@ function Sidebar() {
             socket.emit("new-user");
         }
     }, []);
-
+// stop listning  then add new user
     socket.off("new-user").on("new-user", (payload) => {
         setMembers(payload);
     });
-
+// from localhost
     function getRooms() {
         fetch("http://localhost:8000/rooms")
             .then((res) => res.json())
             .then((data) => setRooms(data));
     }
-
+    // to create the order
     function orderIds(id1, id2) {
         if (id1 > id2) {
             return id1 + "-" + id2;
@@ -55,20 +56,23 @@ function Sidebar() {
             return id2 + "-" + id1;
         }
     }
+// members ordering
 
     function handlePrivateMemberMsg(member) {
         setPrivateMemberMsg(member);
         const roomId = orderIds(user._id, member._id);
         joinRoom(roomId, false);
     }
-
+// for non user there is nothing
     if (!user) {
         return <></>;
     }
+    // for user 
     return (
         <>
             <h2>Available rooms </h2>
             <ListGroup>
+                {/* room mapping and ordering  */}
                 {rooms.map((room, idx) => (
                     <ListGroup.Item key={idx} onClick={() => joinRoom(room)} active={room == currentRoom} style={{ cursor: "pointer", display: "flex", justifyContent: "space-between" }}>
                         {room} {currentRoom !== room && <span className="badge rounded-pill bg-primary">{user.newMessages[room]}</span>}
@@ -76,11 +80,15 @@ function Sidebar() {
                 ))}
             </ListGroup>
             <h2>Members</h2>
+                {/* member mapping and ordering  */}
+
             {members.map((member) => (
+
                 <ListGroup.Item key={member.id} style={{ cursor: "pointer" }} active={privateMemberMsg?._id == member?._id} onClick={() => handlePrivateMemberMsg(member)} disabled={member._id === user._id}>
                     <Row>
                         <Col xs={2} className="member-status">
                             <img src={member.picture} className="member-status-img" />
+                            {/* showing the offline and online members  */}
                             {member.status == "online" ? <i className="fas fa-circle sidebar-online-status"></i> : <i className="fas fa-circle sidebar-offline-status"></i>}
                         </Col>
                         <Col xs={9}>

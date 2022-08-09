@@ -22,7 +22,7 @@ function Login() {
                 navigate("/chat");
             }
         });
-    }
+    }    
 
     return (
         <Container>
@@ -33,15 +33,19 @@ function Login() {
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             {error && <p className="alert alert-danger">{error.data}</p>}
                             <Form.Label>Email address</Form.Label>
+                            {/* setting up the email value */}
                             <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} value={email} required />
                             <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
+                            {/* setting up the password value */}
+
                             <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} required />
                         </Form.Group>
                         <Button variant="primary" type="submit">
+                            {/* adding animation after login button clicked */}
                             {isLoading ? <Spinner animation="grow" /> : "Login"}
                         </Button>
                         <div className="py-4">

@@ -5,6 +5,7 @@ export const userSlice = createSlice({
     name: "user",
     initialState: null,
     reducers: {
+        // showing the notification on the member profile in memberr list
         addNotifications: (state, { payload }) => {
             if (state.newMessages[payload]) {
                 state.newMessages[payload] = state.newMessages[payload] + 1;
@@ -12,6 +13,7 @@ export const userSlice = createSlice({
                 state.newMessages[payload] = 1;
             }
         },
+        // removing the notification
         resetNotifications: (state, { payload }) => {
             delete state.newMessages[payload];
         },

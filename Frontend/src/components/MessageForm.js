@@ -8,10 +8,10 @@ function MessageForm() {
     const user = useSelector((state) => state.user);
     const { socket, currentRoom, setMessages, messages, privateMemberMsg } = useContext(AppContext);
     const messageEndRef = useRef(null);
+    //TO SCRLL THE MESSASGES TO THE BOTTOM
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
-
     function getFormattedDate() {
         const date = new Date();
         const year = date.getFullYear();
@@ -19,17 +19,18 @@ function MessageForm() {
 
         month = month.length > 1 ? month : "0" + month;
         let day = date.getDate().toString();
-
+        
         day = day.length > 1 ? day : "0" + day;
-
+        
         return month + "/" + day + "/" + year;
     }
-
+    
+    //get the conversation new started time 
  
     function scrollToBottom() {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-
+//assigning fuction to the variable
     const todayDate = getFormattedDate();
 
     socket.off("room-messages").on("room-messages", (roomMessages) => {
@@ -39,10 +40,12 @@ function MessageForm() {
     function handleSubmit(e) {
         e.preventDefault();
         if (!message) return;
+        //today date
         const today = new Date();
         const minutes = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
         const time = today.getHours() + ":" + minutes;
         const roomId = currentRoom;
+        //sending messages
         socket.emit("message-room", roomId, message, user, time, todayDate);
         setMessage("");
     }
@@ -62,6 +65,7 @@ function MessageForm() {
                 {!user && <div className="alert alert-danger alert">Please login</div>}
 
                 {user &&
+                //mapping the messages with the date and time along the sender profile img and name
                     messages.map(({ _id: date, messagesByDate }, idx) => (
                         <div key={idx} className=" main ">
                             <p className="alert alert-info text-center message-date-indicator ">{date}</p>
@@ -82,14 +86,18 @@ function MessageForm() {
                 <div ref={messageEndRef} />
             </div>
             <div className="enter_message">
+                {/* //message input form  */}
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col md={11} >
                         <Form.Group>
+                            {/* //enter message will be assign to the setMessage fuction as a pramiter */}
                             <Form.Control type="text" placeholder="Your message" disabled={!user} value={message} onChange={(e) => setMessage(e.target.value)}></Form.Control>
                         </Form.Group>
                     </Col>
                     <Col md={1}>
+                        {/* //submit Button to to send the MESSASGES
+                        //checking  if there is any useer then it wiil be done */}
                         <Button variant="primary" type="submit" style={{ width: "100%", backgroundColor: "orange" }} disabled={!user}>
                             <i className="fas fa-paper-plane"></i>
                         </Button>

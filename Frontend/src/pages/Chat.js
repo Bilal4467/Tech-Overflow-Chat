@@ -10,6 +10,7 @@ function Chat() {
                 <Col md={4}>
                     <Sidebar />
                 </Col>
+                {/* partition of display screen */}
                 <Col md={8}>
                     <MessageForm />
                 </Col>

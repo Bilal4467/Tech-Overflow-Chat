@@ -5,9 +5,11 @@ import { useLogoutUserMutation } from "../services/appApi";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from "../assets/tech_over_flow.png";
+
 function Navigation() {
     const user = useSelector((state) => state.user);
     const [logoutUser] = useLogoutUserMutation();
+    // logout user
     async function handleLogout(e) {
         e.preventDefault();
         await logoutUser(user);
@@ -19,12 +21,14 @@ function Navigation() {
             <Container>
                 <LinkContainer to="#">
                     <Navbar.Brand>
+   {/* setting logo */}
                         <img src={logo} style={{ width: 150, height: 50 }} />
                     </Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
+                        {/* navbar buttons and links for non-user */}
                         {!user && (
                             
                             <LinkContainer to="/login">
@@ -36,20 +40,15 @@ function Navigation() {
                           
                         )}
 
-{!user && (
-    
-                         <LinkContainer to="/signup">
+                        {!user && (
+                             <LinkContainer to="/signup">
                                 <Nav.Link> <Button variant="primary" type="submit">Signup </Button></Nav.Link>
                             </LinkContainer>
- 
-
-)}
-
-
+                        )}
                         <LinkContainer to="/chat">
                             <Nav.Link> <Button variant="primary" type="submit">Chat </Button></Nav.Link>
                         </LinkContainer>
-
+{/* drop down user info */}
                         {user && (
                             <NavDropdown
                                 title={
